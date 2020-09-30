@@ -1,0 +1,80 @@
+Laborator 2. Problema nr.2.
+Creați listă liniară simplu înlănțuită Consumator din înregistrări ce conțin: numele,
+vârsta și numărul de telefon.
+1) Să se afișeze pe ecran informația despre primii cinci consumatori;
+2) Să se afișeze pe ecran consumatorii cu vârsta mai mare de 20 ani.
+
+type adr = ^consumator;
+consumator = record
+name: string;
+age : integer;
+phone : string;
+next : adr;
+end;
+var first, last: adr;
+procedure includ;
+var r:adr;
+begin
+  new(R);
+  r:= last;
+  writeln('Dati consumatorul');
+  writeln('Numele');
+  readln(r^.name);
+  writeln('Virsta');
+  readln(R^.age);
+  writeln('Numarul de telefon');
+  readln(R^.phone);
+  new(last);
+  r^.next := last;
+end;
+
+procedure firstFive;
+var r:adr;
+counter:integer;
+begin
+  counter := 0;
+  r := first^.next;
+  while ((r <> last) and (counter < 5)) do
+  begin
+  writeln('Numele');
+  writeln(r^.name);
+  writeln('Virsta');
+  writeln(R^.age);
+  writeln('Numarul de telefon');
+  writeln(R^.phone);
+  inc(counter);
+  r:=R^.next;
+  end;
+end;
+
+
+procedure ageHigher;
+var r:adr;
+begin
+  r := first^.next;
+  while (r <> last) do
+  begin
+    if (R^.age > 20) then
+      begin
+    writeln('Numele');
+  writeln(r^.name);
+  writeln('Virsta');
+  writeln(R^.age);
+  writeln('Numarul de telefon');
+  writeln(R^.phone);
+  end;
+  r:=R^.next;
+  end;
+end;
+
+begin                 
+  new(first);
+  new(last);
+  first^.next := last;
+  for var i:= 1 to 6 do
+    includ;
+    writeln('////////////// Primi cinci consumatori sunt: ');
+  firstFive;
+  writeln(' ////////////// Consumatorii cu varsta mai mare de 20 de ani sunt: ');
+  ageHigher;
+end.

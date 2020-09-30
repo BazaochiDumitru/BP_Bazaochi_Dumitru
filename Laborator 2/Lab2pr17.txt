@@ -1,0 +1,91 @@
+Laborator 2. Problema nr 17.
+  Creați listă liniară simplu înlănțuită Elev, fiecare nod conținând informații referitoare la
+elevii unei clase (nume, medie, adresă, vârstă), și apoi:
+- să se afișeze elevul de pe poziția k din listă;
+- să se caute informații despre un elev după numele, citit de la tastatură.
+
+type adr = ^celula;
+celula = record
+nume:string;
+medie:real;
+adresa:string;
+virsta:integer;
+next : adr;
+end;
+ 
+var first, last:adr;
+p1:integer;
+procedure include;
+var r:adr;
+begin
+r:=last;
+ writeln('Dati nume');
+ readln(R^.nume);
+ writeln('Dati medie');
+ readln(R^.medie);
+ writeln('Dati adresa');
+ readln(R^.adresa);
+ writeln('Dati virsta');
+ readln(R^.virsta);
+ new(last);
+  r^.next:= last;
+end;
+ 
+procedure afisare(poz:integer);
+var r:adr;
+count:integer;
+begin
+  r:= first^.next;
+  while ( r<> last) and (count <= poz) do
+  begin
+    inc(count);
+     if (count = poz) then
+    begin
+       writeln('Numele');
+       writeln(R^.nume);
+       writeln('Media');
+       writeln(R^.medie);
+       writeln('Adresa');
+       writeln(R^.adresa);
+       writeln('Virsta');
+       writeln(R^.virsta);
+       break;
+    end;
+    r:= r^.next;
+  end;
+end;
+ 
+procedure info;
+var r:adr;
+name:string;
+begin
+  writeln('Dati numele elevului pentru a gasi informatia');
+  readln(name);
+  r:= first^.next;
+  while r<> last do
+  begin
+   if (R^.nume = name) then
+   begin
+       writeln('medie');
+       writeln(R^.medie);
+       writeln('adresa');
+       writeln(R^.adresa);
+       writeln('virsta');
+       writeln(R^.virsta);
+   
+    end;
+     r:= r^.next;
+  end;
+  end;
+ 
+begin
+  new(first);
+  new(last);
+  first^.next := last;
+  for  var i:= 1 to 4 do include;
+  writeln('Dati pozitia dorita de a se afisa');
+  readln(p1);
+  afisare(p1);
+  info;
+ 
+end.
