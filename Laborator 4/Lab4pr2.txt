@@ -1,0 +1,182 @@
+﻿Problema 2. Laborator 4.
+{2. 	În nodurile unui arbore binar sunt memorate numere întregi. Să se elaboreze un
+program care să realizeze următoarele:
+  a. Creează arborele binar prin introducerea numerelor de la tastatură. (facut)
+  b. Determină numărul cu valoarea cea mai mare și de câte ori apare în nodurile
+arborelui.  (facut)
+  c. Creează o listă simplu înlănțuită cu numerele din nodurile arborelui care au ultima
+cifră 5 sau 3.
+  d. Determină dacă toate nodurile din arbore conțin numai valori pozitive.
+  e. Afișează pe ecran numerele de pe un nivel k (k se citește de la tastatură).
+}
+type
+  arbore = ^nod;
+  nod = record
+    cifra: integer;
+    stg, dr: arbore;
+  end;
+
+type
+  elem = record
+    inf: integer;
+    next: ^elem;
+  end;
+
+var
+  t: arbore;
+  k: integer;
+  stiva: ^elem;
+
+{a. Creează arborele binar prin introducerea numerelor de la tastatură.}
+function arb: arbore;
+var
+  r: Arbore;
+  nr: integer;
+begin
+  readln(nr);
+  if nr = 0 then arb := nil else
+  begin
+    new(r);
+    r^.cifra := nr;
+    writeln('Stingu la ', nr);
+    r^.stg := arb;
+    writeln('Dreptul la ', nr);
+    R^.dr := Arb;
+    arb := r;
+  end;
+end;
+
+// Procedura add face adaugarea elementelor in stiva
+procedure add(number: integer);
+var
+  r: ^elem;
+begin
+  new(r);
+  r^.inf := number;
+  r^.next := stiva;
+  stiva := r;
+end;
+
+// Procedura CheckLast verifica ultima cifra
+procedure CheckLast(number: integer);
+var
+  aux: integer;
+begin
+  repeat
+    aux := number mod 10;      
+    number := number div 10;
+  until number = 0;
+  
+  if (aux = 5) or (aux = 3) then add(aux);
+end;
+
+{c. Creează o listă simplu înlănțuită cu numerele din nodurile arborelui care au ultima
+cifră 5 sau 3.}
+function cazC(T: ^nod): integer;
+begin
+  if t = nil then cazC := 0 else
+  begin
+    checkLast(T^.cifra);
+    cazC := cazC(T^.STG) + cazC(T^.DR);
+  end;
+end;
+
+procedure showStiva;
+var
+  r: ^elem;
+begin
+  r := stiva;
+  while r <> nil do
+  begin
+    writeln(R^.inf);
+    r := R^.next;
+  end;
+  
+end;
+
+{d. Determină dacă toate nodurile din arbore conțin numai valori pozitive.}
+function cazD(T: ^nod): boolean;
+begin
+  if t = nil then 
+    cazD := True
+  else 
+  if (T^.cifra < 0) then 
+    cazD := False
+  else 
+    if t^.cifra > 0 then 
+    cazD := True and cazD(T^.STG) and cazD(T^.DR);
+end;
+
+{e. Afișează pe ecran numerele de pe un nivel k (k se citește de la tastatură).}
+procedure cazE(T: ^nod; i, k: integer);
+begin
+  if t <> nil then
+  begin
+    if (i = k) then
+    begin
+      write(T^.cifra);
+    end;
+    cazE(T^.STG, I + 1, K);
+    cazE(T^.STG, I + 1, K);
+  end;
+end;
+
+procedure afisArb(T: Arbore; nivel: integer);
+var
+  i: integer;
+begin
+  if T <> nil then begin
+    afisarb(T^.stg, nivel + 1);
+    for i := 1 to nivel do write('      ');
+    writeln(T^.cifra);
+    afisArb(T^.dr, nivel + 1);
+  end;
+end;
+
+{b. Determină numărul cu valoarea cea mai mare și de câte ori apare în nodurile
+arborelui.}
+function max(a, b: integer): integer;
+begin
+  if a > b then max := a else max := b;
+end;
+
+function MaxElem(T: arbore): integer;
+begin
+  if (T <> nil) and (T^.STG = nil) and (T^.DR = nil) then
+    maxElem := T^.cifra
+    else
+  if t^.STG = nil then
+  begin
+    maxElem := max(T^.cifra, maxElem(T^.DR));
+  end else
+  if T^.DR = nil then
+  begin
+    maxElem := max(T^.cifra, maxelem(T^.STG));
+  end else
+    maxElem := max(T^.cifra, max(maxElem(T^.STG), maxElem(T^.DR)));
+end;
+
+//  Functia numberAparitions numara de cate ori apare elementul maxim in arbore
+function numberAparitions(T: Arbore; maxNR: integer): integer;
+begin
+  if t <> nil then
+  begin
+    if (T^.cifra = maxNr) then numberAparitions := 1 + numberAparitions(T^.STG, maxNR) + numberAparitions(T^.DR, maxNR) else
+      numberAparitions := numberAparitions(T^.STG, maxNR) + numberAparitions(T^.DR, maxNR);
+  end;
+end;
+
+begin
+  writeln('Dati radacina');
+  t := arb;
+  afisarb(t, 0);
+  writeln('Elementul maximal este: ', MaxElem(T));
+  writeln('Numarul de aparitii a elementului maximal este: ', numberAparitions(T, MaxElem(T)));
+  if not(cazD(t)) then writeln('Arborele are valori negative') else writeln('Arborele nu are valori negative');
+  writeln('Dati nivelul dorit');
+  readln(k);
+  cazE(t, 0, k);
+  CazC(t);
+  showStiva();
+  readln;
+end.
