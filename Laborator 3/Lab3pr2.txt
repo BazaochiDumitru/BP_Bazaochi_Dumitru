@@ -1,0 +1,79 @@
+Problema 2. Laborator 3.
+{2.Se da o lista liniara simplu inlantuita in care fiecare nod retine o litera. Sa se elaboreze
+un program care depisteaza daca cuvantul format prin alaturarea literelor citite este
+sau nu palindrom (se obtine acelasi rezultat daca cuvantul se citeste direct sau invers).
+Exemplu: lista urmatoare contine un cuvant palindrom: a->b->c->b->a}
+
+type adr = ^celula;
+celula = record 
+lit : string; 
+next: adr; 
+prev: adr; 
+end;
+
+var 
+sant1,sant2:adr;
+x:string;
+key: integer;
+
+// Functia verfica prima litera cu ultima litera si daca sunt diferite 
+// nu e palindrom, respectiv are loc asa parcurgerea intregului sir.
+function checkPalindrom(s:string):boolean;
+var f:integer;
+begin
+   f := 0;
+    for var i := 1 to length(s) div 2 do
+        if s[i] <> s[length(s)-i+1] then begin
+            writeln('Nu e palindrom');
+            f := 1;
+            break
+        end;
+   if f = 0 then checkPalindrom:=true;
+end;
+
+// Procedura add - adauga litera in lista simplu inlantuita cu 2 santinele
+procedure add(val:string);
+  var R:adr;
+begin
+  r:=sant2;
+  R^.lit := val;
+  new(sant2);
+  r^.next :=sant2;
+  Sant2^.prev:=r;
+end;
+
+// Procedura travers - afiseaza toate literele si zice daca este palindrom sau nu
+procedure TraversInvers;
+var r:adr;
+  aux:string;
+begin
+  r:= sant2^.prev;
+  while r<> sant1 do
+  begin
+    aux:=aux+R^.lit;
+    r:=R^.prev;
+  end;
+  if CheckPalindrom(aux) then writeln('Este palindrom') else writeln('Nu este');
+end;
+
+
+begin
+  new(sant1); 
+  new(sant2); 
+  sant1^.next := sant2;
+  Sant2^.prev := sant1;
+  key := 1;
+  while (key <> 0) do
+  begin
+    writeln('Doriti sa adaugati litera in lista?');
+    writeln('1 = Da, 0 = nu' );
+    readln(key);
+    if key <> 0 then
+    begin
+      writeln('Litera=');
+      readln(x);
+      add(x);
+    end else break;
+  end;
+TraversInvers;
+end.
